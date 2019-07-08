@@ -68,6 +68,14 @@ if [ -z "${EXTENSIONS##*,swoole,*}" ]; then
     && docker-php-ext-enable swoole
 fi
 
+if [ -z "${EXTENSIONS##*,pcntl,*}" ]; then
+    echo "---------- Install swoole ----------"
+    mkdir pcntl \
+    && tar -xf pcntl-5.0.0rc1.tgz -C pcntl --strip-components=1 \
+    && ( cd pcntl && phpize && ./configure --enable-openssl && make ${MC} && make install ) \
+    && docker-php-ext-enable pcntl
+fi
+
 if [ -z "${EXTENSIONS##*,pdo_sqlsrv,*}" ]; then
     echo "---------- Install pdo_sqlsrv ----------"
 	apk add --no-cache unixodbc-dev
